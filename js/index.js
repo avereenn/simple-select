@@ -2,7 +2,12 @@
 
 import { setCopyYear } from './utils.js';
 import SimpleSelect from './simpleSelect.js';
-// alert(Boolean('false'));
+
 setCopyYear('.js-copy-year');
 
-new SimpleSelect('.js-select');
+new SimpleSelect('.js-select', {
+    arrow: {
+        type: 'svg',
+        src: '/images/sprite.svg#arrow',
+    }
+});
