@@ -40,26 +40,30 @@ export default class SimpleSelect {
       prevSelectedOption.selected = false;
       prevSelectedOption.originalOption.selected = 'false';
       prevSelectedOption.customOptionEl.dataset.selected = false;
-      prevSelectedOption.customOptionEl.hidden = false;
+      prevSelectedOption.customOptionEl.classList.toggle('simple-select__item_selected', prevSelectedOption.selected);
     }
 
     targetOption.selected = true;
     targetOption.originalOption.selected = 'true';
     targetOption.customOptionEl.dataset.selected = true;
-    targetOption.customOptionEl.hidden = true;
+    targetOption.customOptionEl.classList.toggle('simple-select__item_selected', targetOption.selected);
 
     // записываем выбранное значение в поле текущего значения селекта
     this.fieldEl.textContent = targetOption.text;
   }
 
   onSetSelectedOptionClick(ev) {
-    const target = ev.target.closest('.js-custom-option');
+    const target = ev.target.closest('.js-simple-select-option');
 
     if (!target) return;
 
     const id = target.id;
 
     this.setSelectedOption(id);
+  }
+  
+  onShowOptionListInnerClick(ev) {
+    const target = ev.target.closest('.js-simple-select-inner');
   }
 
   createArrowEl(type, src) {
@@ -91,7 +95,7 @@ export default class SimpleSelect {
     const listEl = document.createElement('ul');
     let arrowEl = null;
 
-    if (!!this.options.arrow) {
+    if (!!this.options?.arrow) {
       const { arrow: { type, src } } = this.options;
       arrowEl = this.createArrowEl(type, src);
     }
@@ -99,7 +103,7 @@ export default class SimpleSelect {
     this.fieldEl = fieldEl;
 
     wrapperEl.classList.add('simple-select');
-    fieldEl.classList.add('simple-select__inner');
+    fieldEl.classList.add('simple-select__inner', 'js-simple-select-inner');
     listEl.classList.add('simple-select__list');
 
     this.state.forEach((option) => {
@@ -110,7 +114,7 @@ export default class SimpleSelect {
 
       if (selected) fieldEl.textContent = text;
 
-      optionEl.classList.add('simple-select__item', 'js-custom-option');
+      optionEl.classList.add('simple-select__item', 'js-simple-select-option');
       optionEl.id = id;
       optionEl.textContent = text;
       optionEl.dataset.value = value;
